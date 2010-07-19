@@ -1,0 +1,28 @@
+Wikify plugin for JQuery
+
+Make links to Wikipedia according to keywords on selected page elements
+
+==API==
+
+Set default values for lang and variant
+
+ * $.wikifySetting(lang, variant);
+
+Make links to Wikipedia according to keywords on selected page elements
+
+ * $(selector).wikify(keywords, lang, variant);
+
+Here lang and variant are optional.
+
+
+==Use cases==
+
+Use like:
+
+   $('english-section').wikify(['Mathematics', 'Physics', 'Art']);
+   $('chinese-section').wikify(['数学', '物理', '艺术'], 'zh', 'zh-cn');
+
+Or like below:
+
+   $.wikifySetting('zh', 'zh-cn');
+   $('chinese-section').wikify(['数学', '物理', '艺术']);
