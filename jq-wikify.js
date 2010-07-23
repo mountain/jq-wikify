@@ -10,9 +10,14 @@
  * $('chinese-section').wikify(['数学', '物理', '艺术']);
  */
 (function($) {
-    $.wikifySetting = function(lang, variant) {
-      $.fn.wikify.lang = lang;
-      $.fn.wikify.variant = variant;
+    $.wikifySetting = function(options) {
+      $.fn.wikify.options = {
+        lang: 'en',
+        variant: 'wiki',
+        linkClass: 'wikilink',
+        rel: 'definition'
+      };
+      $.extend($.fn.wikify.options, options);
     };
     $.fn.wikify = function(keywords, lang, variant) {
       this.each(function() {
@@ -21,8 +26,6 @@
           wikify($t, keywords, lang, variant);
       });
     };
-    $.fn.wikify.lang = 'en';
-    $.fn.wikify.variant = 'wiki';
 
     var utf8 = function (string) {
       string = string.replace(/\r\n/g,"\n");
@@ -50,8 +53,8 @@
     };
 
     var wikify = function(obj, keywords, lang, variant) {
-      lang = lang || $.fn.wikify.lang;
-      variant = variant || $.fn.wikify.variant;
+      lang = lang || $.fn.wikify.options.lang;
+      variant = variant || $.fn.wikify.options.variant;
       var titles = null;
       $.each(keywords, function(index, value) {
           if(index===0) titles = urlencode(value);
@@ -80,9 +83,11 @@
                   url = page.fullurl,
                   title1 = page.title,
                   title2 = revMap[page.title] || page.title,
-                  re = new RegExp('(' + title1 + '|' + title2 + ')')
+                  re = new RegExp('(' + title1 + '|' + title2 + ')'),
+                  clz = $.fn.wikify.options.linkClass,
+                  rel = $.fn.wikify.options.rel;
               url = url.replace('/wiki/', '/' + variant + '/');
-              var start = '<a href="' + url + '">', end = '</a>';
+              var start = '<a class="' + clz + '" rel="' + rel + '" href="' + url + '">', end = '</a>';
               storeReplacement(re, start, end);
             }
           }
