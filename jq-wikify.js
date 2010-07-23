@@ -1,9 +1,5 @@
 /*
- * Wikify plugin for JQuery
- *
- * By Mingli Yuan
- *
- * Dual license under MIT and Mozilla
+ * Wikify plugin By Mingli Yuan
  *
  * // Use like so:
  * $('english-section').wikify(['Mathematics', 'Physics', 'Art']);
@@ -21,6 +17,7 @@
     $.fn.wikify = function(keywords, lang, variant) {
       this.each(function() {
           var $t = $(this);
+          if(keywords.length===1) keywords = keywords[0].split(',');
           wikify($t, keywords, lang, variant);
       });
     };
@@ -77,15 +74,15 @@
           for(var ind in data.query.normalized) {
             revMap[data.query.normalized[ind].to] = data.query.normalized[ind].from;
           }
-          for(pageId in data.query.pages) {
-            if(pageId != '-1') {
+          for(var pageId in data.query.pages) {
+            if(pageId > 0) {
               var page = data.query.pages[pageId],
                   url = page.fullurl,
                   title1 = page.title,
                   title2 = revMap[page.title] || page.title,
                   re = new RegExp('(' + title1 + '|' + title2 + ')')
               url = url.replace('/wiki/', '/' + variant + '/');
-              var start = '<a href=' + url + '>', end = '</a>';
+              var start = '<a href="' + url + '">', end = '</a>';
               storeReplacement(re, start, end);
             }
           }
@@ -117,11 +114,11 @@
                 var done = [], notDone=[];
                 for(var ind in replacements) {
                   var newText = replacements[ind](text);
-                  if(newText !== text) done.push(ind);
+                  if(newText !== text)
+                    done.push(ind);
+                  else
+                    notDone.push(replacements[ind]);
                   text = newText;
-                }
-                for(var ind in replacements) {
-                  if(indexOf(done, ind) !== -1) notDone.push(replacements[ind]);
                 }
                 replacements = notDone;
               };
@@ -320,4 +317,3 @@
     return obj;
   }
 })();
-
