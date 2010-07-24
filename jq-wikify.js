@@ -11,12 +11,6 @@
  */
 (function($) {
     $.wikifySetting = function(options) {
-      $.fn.wikify.options = {
-        lang: 'en',
-        variant: 'wiki',
-        linkClass: 'wikilink',
-        rel: 'definition'
-      };
       $.extend($.fn.wikify.options, options);
     };
     $.fn.wikify = function(keywords, lang, variant) {
@@ -136,6 +130,12 @@
 
           obj.html(results);
       });
+    };
+    $.fn.wikify.options = {
+      lang: 'en',
+      variant: 'wiki',
+      linkClass: 'wikilink',
+      rel: 'definition'
     };
 })(jQuery);
 
